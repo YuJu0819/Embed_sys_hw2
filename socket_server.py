@@ -25,6 +25,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 data = buffer_data[choose] + '}'
             obj = json.loads(data)
             t = obj['s']
-            plt.scatter(t, obj['x'], c='blue')  # x, y, z, gx, gy, gz
+            plt.plot(t, obj['x'], 'bo-', linewidth=2, label='pGyroDataX')  # x, y, z, gx, gy, gz
+            plt.plot(t, obj['y'], 'ro-', label='pGyroDataY')  # x, y, z, gx, gy, gz
+            plt.plot(t, obj['z'], 'yo-', label='pGyroDataZ')  # x, y, z, gx, gy, gz
             plt.xlabel("sample num")
             plt.pause(0.0001)
