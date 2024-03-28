@@ -6,6 +6,14 @@ import matplotlib.pyplot as plt
 HOST = '172.20.10.14'  # IP address
 PORT = 4000  # Port to listen on (use ports > 1023)
 
+plt.ion()
+legend_shown = False
+dataX = []
+dataY = []
+dataZ = []
+dataTime = []
+
+
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
     s.listen()
@@ -24,9 +32,20 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     choose += 1
                 data = buffer_data[choose] + '}'
             obj = json.loads(data)
-            t = obj['s']
-            plt.plot(t, obj['x'], 'bo-', linewidth=2, label='pGyroDataX')  # x, y, z, gx, gy, gz
-            plt.plot(t, obj['y'], 'ro-', label='pGyroDataY')  # x, y, z, gx, gy, gz
-            plt.plot(t, obj['z'], 'yo-', label='pGyroDataZ')  # x, y, z, gx, gy, gz
+            dataTime.append(obj['s'])
+            dataX.append(obj['x'])
+            dataY.append(obj['y'])
+            dataZ.append(obj['z'])
+            # obj['s']
+
+            plt.plot(dataTime, dataX, 'b-', linewidth=0.5, label='pGyroDataX')  # x, y, z, gx, gy, gz
+            plt.plot(dataTime, dataY, 'r-', linewidth=0.5, label='pGyroDataY')  # x, y, z, gx, gy, gz
+            plt.plot(dataTime, dataZ, 'y-', linewidth=0.5, label='pGyroDataZ')  # x, y, z, gx, gy, gz
             plt.xlabel("sample num")
+            plt.title("Gyro Data - sample num")
+            plt.draw()
+            if not legend_shown:
+                plt.legend()
+                legend_shown = True     
             plt.pause(0.0001)
+
